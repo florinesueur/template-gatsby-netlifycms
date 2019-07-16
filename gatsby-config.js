@@ -35,14 +35,14 @@ module.exports = {
 			},
 		},
 		`gatsby-plugin-netlify-cms`,
-		{
-			resolve: `gatsby-source-filesystem`,
-			options: {
-				path: `${__dirname}/content/blog`,
-				name: 'blog',
-			},
-		},
-		`gatsby-transformer-remark`,
+		// {
+		// 	resolve: `gatsby-source-filesystem`,
+		// 	options: {
+		// 		path: `${__dirname}/content/blog`,
+		// 		name: 'blog',
+		// 	},
+		// },
+		// `gatsby-transformer-remark`,
 		// {
 		// 	resolve: `gatsby-plugin-favicon`,
 		// 	options: {
