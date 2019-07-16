@@ -3,6 +3,8 @@ module.exports = {
 		title: `Title from siteMetadata`,
 	},
 	plugins: [
+		`gatsby-plugin-react-helmet`,
+		`gatsby-plugin-netlify-cms`,
 		{
 			resolve: `gatsby-plugin-prefetch-google-fonts`,
 			options: {
@@ -20,13 +22,12 @@ module.exports = {
 				],
 			},
 		},
-		`gatsby-plugin-react-helmet`,
 		`gatsby-plugin-postcss`,
 		{
-			resolve: `gatsby-plugin-purgecss`,
+			resolve: `gatsby-plugin-purgecss`, // purges all unused/unreferenced css rules
 			options: {
 				// printRejected: true, // Print removed selectors and processed file names
-				develop: true, // Enable while using `gatsby develop`
+				develop: false, // Enable while using `gatsby develop`
 				// tailwind: true, // Enable tailwindcss support
 				// whitelist: ['whitelist'], // Don't remove this selector
 				// ignore: ['/ignored.css', 'prismjs/', 'docsearch.js/'], // Ignore files/folders
@@ -34,7 +35,7 @@ module.exports = {
 				// debug: true
 			},
 		},
-		`gatsby-plugin-netlify-cms`,
+
 		// {
 		// 	resolve: `gatsby-source-filesystem`,
 		// 	options: {
@@ -74,5 +75,6 @@ module.exports = {
 		// 		},
 		// 	},
 		// },
+		'gatsby-plugin-netlify', // make sure to keep it last in the array
 	],
 };
