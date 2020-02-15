@@ -7,6 +7,11 @@ export function IndexPageTemplate({ title, image }) {
 		<>
 			<h1>{title}</h1>
 			<Img fluid={image} />
+			<style jsx>{`
+				h1 {
+					color: red;
+				}
+			`}</style>
 		</>
 	);
 }
