@@ -1,80 +1,75 @@
 module.exports = {
 	siteMetadata: {
-		title: `Title from siteMetadata`,
+		title: 'Title from siteMetadata',
+		description: 'Description du site',
 	},
 	plugins: [
-		`gatsby-plugin-react-helmet`,
-		`gatsby-plugin-netlify-cms`,
+		'gatsby-plugin-react-helmet',
 		{
-			resolve: `gatsby-plugin-prefetch-google-fonts`,
+			// keep as first gatsby-source-filesystem plugin for gatsby image support
+			resolve: 'gatsby-source-filesystem',
 			options: {
-				fonts: [
+				path: `${__dirname}/static/img`,
+				name: 'uploads',
+			},
+		},
+		{
+			resolve: 'gatsby-source-filesystem',
+			options: {
+				path: `${__dirname}/src/pages`,
+				name: 'pages',
+			},
+		},
+		{
+			resolve: 'gatsby-source-filesystem',
+			options: {
+				path: `${__dirname}/src/img`,
+				name: 'images',
+			},
+		},
+		'gatsby-plugin-sharp',
+		'gatsby-transformer-sharp',
+		{
+			resolve: 'gatsby-transformer-remark',
+			options: {
+				plugins: [
 					{
-						family: `Dosis`,
-						subsets: [`latin`],
-						variants: [`400`, `700`],
+						resolve: 'gatsby-remark-relative-images',
+						options: {
+							name: 'uploads',
+						},
 					},
 					{
-						family: `Open Sans`,
-						subsets: [`latin`],
-						variants: [`400`],
+						resolve: 'gatsby-remark-images',
+						options: {
+							// It's important to specify the maxWidth (in pixels) of
+							// the content container as this plugin uses this as the
+							// base for generating different widths of each image.
+							maxWidth: 2048,
+						},
+					},
+					{
+						resolve: 'gatsby-remark-copy-linked-files',
+						options: {
+							destinationDir: 'static',
+						},
 					},
 				],
 			},
 		},
-		`gatsby-plugin-postcss`,
 		{
-			resolve: `gatsby-plugin-purgecss`, // purges all unused/unreferenced css rules
+			resolve: 'gatsby-plugin-netlify-cms',
 			options: {
-				// printRejected: true, // Print removed selectors and processed file names
-				develop: false, // Enable while using `gatsby develop`
-				// tailwind: true, // Enable tailwindcss support
-				// whitelist: ['whitelist'], // Don't remove this selector
-				// ignore: ['/ignored.css', 'prismjs/', 'docsearch.js/'], // Ignore files/folders
-				// purgeOnly : ['components/', '/main.css', 'bootstrap/'], // Purge only these files/folders
-				// debug: true
+				modulePath: `${__dirname}/src/cms/cms.js`,
 			},
 		},
-
-		// {
-		// 	resolve: `gatsby-source-filesystem`,
-		// 	options: {
-		// 		path: `${__dirname}/content/blog`,
-		// 		name: 'blog',
-		// 	},
-		// },
-		// `gatsby-transformer-remark`,
-		// {
-		// 	resolve: `gatsby-plugin-favicon`,
-		// 	options: {
-		// 		logo: './static/favicon.png',
-
-		// 		// WebApp Manifest Configuration
-		// 		appName: null, // Inferred with your package.json
-		// 		appDescription: null,
-		// 		developerName: null,
-		// 		developerURL: null,
-		// 		dir: 'auto',
-		// 		lang: 'fr-FR',
-		// 		background: '#fff',
-		// 		theme_color: '#fff',
-		// 		display: 'standalone',
-		// 		orientation: 'any',
-		// 		start_url: '/?homescreen=1',
-		// 		version: '1.0',
-
-		// 		icons: {
-		// 			android: true,
-		// 			appleIcon: true,
-		// 			appleStartup: true,
-		// 			coast: false,
-		// 			favicons: true,
-		// 			firefox: true,
-		// 			yandex: false,
-		// 			windows: false,
-		// 		},
-		// 	},
-		// },
-		'gatsby-plugin-netlify', // make sure to keep it last in the array
+		{
+			resolve: 'gatsby-plugin-purgecss', // purges all unused/unreferenced css rules
+			options: {
+				develop: true, // Activates purging in npm run develop
+				// purgeOnly: ['/all.sass'],  applies purging only on the bulma css file
+			},
+		}, // must be after other CSS plugins
+		'gatsby-plugin-netlify',
 	],
 };
