@@ -99,7 +99,7 @@ module.exports = {
 			resolve: 'gatsby-plugin-styled-jsx',
 			options: {
 				optimizeForSpeed: true,
-				sourceMaps: true,
+				sourceMaps: false,
 				vendorPrefixes: true,
 			},
 		},
@@ -110,6 +110,7 @@ module.exports = {
 				// purgeOnly: ['/all.sass'],  applies purging only on the bulma css file
 			},
 		}, // must be after other CSS plugins
+		'gatsby-plugin-netlify-cache',
 		{
 			resolve: `gatsby-plugin-netlify`,
 			options: {
