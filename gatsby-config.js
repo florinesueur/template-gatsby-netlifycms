@@ -2,6 +2,7 @@ module.exports = {
 	siteMetadata: {
 		title: 'Title from siteMetadata',
 		description: 'Description du site',
+		siteUrl: `https://www.example.com`,
 	},
 	plugins: [
 		'gatsby-plugin-react-helmet',
@@ -58,6 +59,37 @@ module.exports = {
 			},
 		},
 		{
+			resolve: 'gatsby-plugin-sitemap',
+			options: {
+				output: '/sitemap.xml',
+				exclude: ['/dev-404-page', '/404', '/offline-plugin-app-shell-fallback'],
+				query: `
+					{
+						site {
+							siteMetadata {
+								siteUrl
+							}
+						}
+	
+						allSitePage {
+							edges {
+								node {
+									path
+								}
+							}
+						}
+				}`,
+				serialize: ({ site, allSitePage }) =>
+					allSitePage.edges.map(edge => {
+						return {
+							url: site.siteMetadata.siteUrl + edge.node.path,
+							changefreq: `daily`,
+							priority: 0.7,
+						};
+					}),
+			},
+		},
+		{
 			resolve: 'gatsby-plugin-netlify-cms',
 			options: {
 				modulePath: `${__dirname}/src/cms/cms.js`,
@@ -70,6 +102,16 @@ module.exports = {
 				// purgeOnly: ['/all.sass'],  applies purging only on the bulma css file
 			},
 		}, // must be after other CSS plugins
-		'gatsby-plugin-netlify',
+		{
+			resolve: `gatsby-plugin-netlify`,
+			options: {
+				headers: {}, // option to add more headers. `Link` headers are transformed by the below criteria
+				allPageHeaders: [], // option to add headers for all pages. `Link` headers are transformed by the below criteria
+				mergeSecurityHeaders: false, // boolean to turn off the default security headers
+				mergeLinkHeaders: false, // boolean to turn off the default gatsby js headers
+				mergeCachingHeaders: false, // boolean to turn off the default caching headers
+				generateMatchPathRewrites: false, // boolean to turn off automatic creation of redirect rules for client only paths
+			},
+		},
 	],
 };
